@@ -7,9 +7,15 @@ Run the following command to build the example:
     ./gradlew clean build
     
 ## Running the Example
-Run the following command to start the example:
+Follow the steps below to run the example:
 
-    ./gradlew run
+1. Run the following command to start the `hello-service`:
+
+        ./gradlew :hello-service:run
+        
+2. Run the following command to start the `client`:
+
+        ./gradlew :client:run
 
 ## Bugs and Feedback
 For bugs, questions, and discussions please use the [Github Issues](https://github.com/gregwhitaker/apple-servicetalk-example/issues).
