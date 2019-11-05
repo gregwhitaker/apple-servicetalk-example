@@ -1,4 +1,18 @@
 # apple-servicetalk-example
+An example of building a simple RESTful microservice using JAX-RS and [Apple ServiceTalk](http://servicetalk.io).
+
+## Building the Example
+Run the following command to build the example:
+
+    ./gradlew clean build
+    
+## Running the Example
+Run the following command to start the example:
+
+    ./gradlew run
+
+## Bugs and Feedback
+For bugs, questions, and discussions please use the [Github Issues](https://github.com/gregwhitaker/apple-servicetalk-example/issues).
 
 ## License
 MIT License
