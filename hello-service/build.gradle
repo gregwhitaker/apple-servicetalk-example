@@ -1,8 +1,10 @@
 plugins {
     id 'java'
+    id 'application'
 }
 
 sourceCompatibility = 1.8
+mainClassName = 'example.service.hello.HelloServer'
 
 dependencies {
     implementation 'io.servicetalk:servicetalk-annotations:0.19.0'
