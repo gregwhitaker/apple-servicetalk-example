@@ -1,0 +1,4 @@
+rootProject.name = 'apple-servicetalk-example'
+include 'client'
+include 'hello-service'
+
