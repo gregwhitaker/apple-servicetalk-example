@@ -2,7 +2,6 @@ package example.client.hello;
 
 import io.servicetalk.data.jackson.JacksonSerializationProvider;
 import io.servicetalk.http.api.HttpClient;
-import io.servicetalk.http.api.HttpDeserializer;
 import io.servicetalk.http.api.HttpSerializationProvider;
 import io.servicetalk.http.netty.HttpClients;
 import org.slf4j.Logger;
@@ -26,8 +25,6 @@ public class HelloClient {
 
         CountDownLatch latch = new CountDownLatch(1);
 
-        LOG.info("Sending request to hello service for name: '{}'", name);
-
         HttpSerializationProvider serializer = jsonSerializer(new JacksonSerializationProvider());
 
         try (HttpClient client = HttpClients.forSingleAddress("localhost", 8080).build()) {
@@ -36,8 +33,11 @@ public class HelloClient {
                 url += "?name=" + name;
             }
 
+            LOG.info("Sending request to service: '{}'", url);
+
             client.request(client.get(url))
                     .whenFinally(latch::countDown)
+                    .whenOnError(Throwable::printStackTrace)
                     .subscribe(httpResponse -> {
                         LOG.info("Response: " + httpResponse.payloadBody(serializer.deserializerFor(HelloResponse.class)));
                     });
