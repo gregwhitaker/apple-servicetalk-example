@@ -13,9 +13,23 @@ Follow the steps below to run the example:
 
         ./gradlew :hello-service:run
         
-2. Run the following command to start the `client`:
+2. In a new terminal, run the following command to execute the `client`:
 
         ./gradlew :client:run
+        
+    If successful, you will see the following message:
+
+        > Task :client:run
+        [main] INFO example.client.hello.HelloClient - Response: Hello, You!
+        
+3. In a new terminal, run the following command to execute the client with a supplied name:
+
+        ./gradlew :client:run --args='Bob'
+
+    If successful, you will see the following message:
+    
+        > Task :client:run
+        [main] INFO example.client.hello.HelloClient - Response: Hello, Bob!
 
 ## Bugs and Feedback
 For bugs, questions, and discussions please use the [Github Issues](https://github.com/gregwhitaker/apple-servicetalk-example/issues).
