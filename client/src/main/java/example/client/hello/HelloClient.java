@@ -1,7 +1,9 @@
 package example.client.hello;
 
 import io.servicetalk.data.jackson.JacksonSerializationProvider;
+import io.servicetalk.http.api.BlockingHttpClient;
 import io.servicetalk.http.api.HttpClient;
+import io.servicetalk.http.api.HttpResponse;
 import io.servicetalk.http.api.HttpSerializationProvider;
 import io.servicetalk.http.netty.HttpClients;
 import org.slf4j.Logger;
@@ -23,26 +25,18 @@ public class HelloClient {
             name = args[0];
         }
 
-        CountDownLatch latch = new CountDownLatch(1);
+        String urlFragment = "/v1/hello";
+        if (name != null && !name.isEmpty()) {
+            urlFragment += "?name=" + name;
+        }
 
         HttpSerializationProvider serializer = jsonSerializer(new JacksonSerializationProvider());
 
-        try (HttpClient client = HttpClients.forSingleAddress("localhost", 8080).build()) {
-            String url = "/v1/hello";
-            if (name != null && !name.isEmpty()) {
-                url += "?name=" + name;
-            }
+        try (BlockingHttpClient client = HttpClients.forSingleAddress("localhost", 8080).buildBlocking()) {
+            HttpResponse httpResponse = client.request(client.get(urlFragment));
+            HelloResponse helloResponse = httpResponse.payloadBody(serializer.deserializerFor(HelloResponse.class));
 
-            LOG.info("Sending request to service: '{}'", url);
-
-            client.request(client.get(url))
-                    .whenFinally(latch::countDown)
-                    .whenOnError(Throwable::printStackTrace)
-                    .subscribe(httpResponse -> {
-                        LOG.info("Response: " + httpResponse.payloadBody(serializer.deserializerFor(HelloResponse.class)));
-                    });
+            LOG.info("Response: " + helloResponse.getMessage());
         }
-
-        latch.await();
     }
 }
